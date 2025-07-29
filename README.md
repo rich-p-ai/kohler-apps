@@ -42,9 +42,14 @@ The initial setup was completed on Tue, Jul 29, 2025  3:19:00 PM using:
 ./backup-namespace-setup.sh
 ```
 
+**Note**: The setup script creates a local project directory based on the repository name (e.g., `balance-fit`) to organize all backup files. This allows multiple namespace backups to coexist without conflicts.
+
 ### Daily Backups
 Daily backups are automated using:
 ```bash
+# Navigate to the project directory
+cd balance-fit  # (or your repository name)
+
 # Manual run
 ./scripts/daily-backup.sh
 
@@ -56,6 +61,9 @@ Daily backups are automated using:
 
 ### Deploy the ArgoCD Application
 ```bash
+# Navigate to the project directory
+cd balance-fit  # (or your repository name)
+
 # Login to target cluster (if not already logged in)
 oc login <your-cluster-url> --token=<your-token>
 
@@ -68,6 +76,9 @@ oc get application balance-fit-prd-backup -n openshift-gitops -w
 
 ### Verify Deployment
 ```bash
+# Navigate to the project directory (if not already there)
+cd balance-fit  # (or your repository name)
+
 # Check application status
 oc get application balance-fit-prd-backup -n openshift-gitops
 
@@ -91,7 +102,8 @@ Daily backup logs are available at:
 # View latest backup log
 tail -f /var/log/balance-fit-prd-backup.log
 
-# View backup summaries
+# View backup summaries (from project directory)
+cd balance-fit  # (or your repository name)
 ls -la backup/daily/
 ```
 
@@ -99,15 +111,19 @@ ls -la backup/daily/
 
 ### Restore from Backup
 1. Ensure target cluster is accessible
-2. Deploy ArgoCD application:
+2. Navigate to the project directory: `cd balance-fit` (or your repository name)
+3. Deploy ArgoCD application:
    ```bash
    oc apply -f gitops/argocd-application.yaml
    ```
-3. ArgoCD will automatically sync and restore all resources
+4. ArgoCD will automatically sync and restore all resources
 
 ### Manual Restore
 If ArgoCD is not available:
 ```bash
+# Navigate to the project directory
+cd balance-fit  # (or your repository name)
+
 # Deploy using Kustomize
 kubectl apply -k gitops/overlays/prd
 ```
