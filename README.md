@@ -114,10 +114,24 @@ kubectl apply -k gitops/overlays/prd
 
 ## Configuration
 
-- **Source Cluster**: https://api.ocp-prd.kohlerco.com:6443
+- **Source Cluster**: Dynamic (detected from current context)
 - **Source Namespace**: balance-fit-prd
 - **GitHub Repository**: https://github.com/rich-p-ai/kohler-apps.git
 - **ArgoCD Namespace**: openshift-gitops
+
+### Authentication Requirements
+
+Before using the backup scripts, ensure you are authenticated to the OpenShift cluster:
+
+```bash
+# Login to your OpenShift cluster
+oc login <your-cluster-url> --token=<your-token>
+
+# Verify access to the namespace
+oc get namespace balance-fit-prd
+```
+
+The backup scripts will automatically detect your current cluster context and verify access.
 
 ## Support
 
