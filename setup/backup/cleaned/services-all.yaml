@@ -1,0 +1,214 @@
+apiVersion: v1
+items:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      creationTimestamp: "2025-06-04T15:25:19Z"
+      labels:
+        app: directvolumemigration-rsync-transfer
+        app.kubernetes.io/part-of: openshift-migration
+        directvolumemigration: 967f6a03-b630-419e-b618-9b69e01d0284
+        migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+        owner: directvolumemigration
+        purpose: rsync
+      name: dvm
+      namespace: balance-fit-prd
+      resourceVersion: "144760492"
+      uid: c59e6e6b-f967-4c26-aa71-a6ad49fff9b4
+    spec:
+      clusterIP: 172.30.181.247
+      clusterIPs:
+        - 172.30.181.247
+      internalTrafficPolicy: Cluster
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: dvm
+          port: 6443
+          protocol: TCP
+          targetPort: 6443
+      selector:
+        app: directvolumemigration-rsync-transfer
+        app.kubernetes.io/part-of: openshift-migration
+        directvolumemigration: 967f6a03-b630-419e-b618-9b69e01d0284
+        migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+        owner: directvolumemigration
+        purpose: rsync
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      creationTimestamp: "2025-06-04T15:25:19Z"
+      labels:
+        app: directvolumemigration-rsync-transfer-block
+        app.kubernetes.io/part-of: openshift-migration
+        directvolumemigration: 967f6a03-b630-419e-b618-9b69e01d0284
+        migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+        owner: directvolumemigration
+        purpose: rsync
+      name: dvm-block
+      namespace: balance-fit-prd
+      resourceVersion: "144760498"
+      uid: 6147088f-6b9f-4bf1-a714-684e90d7a1c6
+    spec:
+      clusterIP: 172.30.34.3
+      clusterIPs:
+        - 172.30.34.3
+      internalTrafficPolicy: Cluster
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: dvm-block
+          port: 6443
+          protocol: TCP
+          targetPort: 6443
+      selector:
+        app: directvolumemigration-rsync-transfer-block
+        app.kubernetes.io/part-of: openshift-migration
+        directvolumemigration: 967f6a03-b630-419e-b618-9b69e01d0284
+        migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+        owner: directvolumemigration
+        purpose: rsync
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        app.kubernetes.io/managed-by: argocd
+        app.kubernetes.io/version: 1.0.0
+        cluster: ocp-prd
+        environment: production
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"efit","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"backend","environment":"production"},"name":"efit","namespace":"balance-fit-prd"},"spec":{"ports":[{"name":"php-fpm","port":9000,"protocol":"TCP","targetPort":9000}],"selector":{"app":"efit","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","environment":"production"},"type":"ClusterIP"}}
+      creationTimestamp: "2025-06-04T16:49:53Z"
+      labels:
+        app: efit
+        app.kubernetes.io/instance: balance-fit-prod
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        component: backend
+        environment: production
+      name: efit
+      namespace: balance-fit-prd
+      resourceVersion: "169338519"
+      uid: 97c3be4f-6161-4145-b967-b7bb2cc323f3
+    spec:
+      clusterIP: 172.30.31.172
+      clusterIPs:
+        - 172.30.31.172
+      internalTrafficPolicy: Cluster
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: php-fpm
+          port: 9000
+          protocol: TCP
+          targetPort: 9000
+      selector:
+        app: efit
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        environment: production
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        app.kubernetes.io/managed-by: argocd
+        app.kubernetes.io/version: 1.0.0
+        cluster: ocp-prd
+        environment: production
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"mysql","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"database","environment":"production"},"name":"mysql-service","namespace":"balance-fit-prd"},"spec":{"ports":[{"name":"mysql","port":3306,"protocol":"TCP","targetPort":3306}],"selector":{"app":"mysql","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","environment":"production"},"type":"ClusterIP"}}
+      creationTimestamp: "2025-06-04T16:49:53Z"
+      labels:
+        app: mysql
+        app.kubernetes.io/instance: balance-fit-prod
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        component: database
+        environment: production
+      name: mysql-service
+      namespace: balance-fit-prd
+      resourceVersion: "169338522"
+      uid: a373a6fe-b8ac-4207-bcc4-ed1d15131d50
+    spec:
+      clusterIP: 172.30.140.238
+      clusterIPs:
+        - 172.30.140.238
+      internalTrafficPolicy: Cluster
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: mysql
+          port: 3306
+          protocol: TCP
+          targetPort: 3306
+      selector:
+        app: mysql
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        environment: production
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        app.kubernetes.io/managed-by: argocd
+        app.kubernetes.io/version: 1.0.0
+        cluster: ocp-prd
+        environment: production
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"nginx","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"web","environment":"production"},"name":"nginx-service","namespace":"balance-fit-prd"},"spec":{"ports":[{"name":"http","port":8030,"protocol":"TCP","targetPort":8030}],"selector":{"app":"nginx","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","environment":"production"},"type":"ClusterIP"}}
+      creationTimestamp: "2025-06-04T16:49:53Z"
+      labels:
+        app: nginx
+        app.kubernetes.io/instance: balance-fit-prod
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        component: web
+        environment: production
+      name: nginx-service
+      namespace: balance-fit-prd
+      resourceVersion: "169338524"
+      uid: 40e533c9-d47e-4db2-a53a-386b94dd21a7
+    spec:
+      clusterIP: 172.30.71.29
+      clusterIPs:
+        - 172.30.71.29
+      internalTrafficPolicy: Cluster
+      ipFamilies:
+        - IPv4
+      ipFamilyPolicy: SingleStack
+      ports:
+        - name: http
+          port: 8030
+          protocol: TCP
+          targetPort: 8030
+      selector:
+        app: nginx
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        environment: production
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+kind: List
+metadata: {}

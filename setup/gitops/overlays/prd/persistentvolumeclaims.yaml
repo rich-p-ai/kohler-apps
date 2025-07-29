@@ -1,0 +1,182 @@
+apiVersion: v1
+items:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"app":"balance-fit","component":"storage","environment":"production"},"name":"app-data","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"20Gi"}},"storageClassName":"ocs-storagecluster-ceph-rbd"}}
+        pv.kubernetes.io/bind-completed: "yes"
+        pv.kubernetes.io/bound-by-controller: "yes"
+        volume.beta.kubernetes.io/storage-provisioner: openshift-storage.rbd.csi.ceph.com
+        volume.kubernetes.io/storage-provisioner: openshift-storage.rbd.csi.ceph.com
+      creationTimestamp: "2025-07-01T11:44:28Z"
+      finalizers:
+        - kubernetes.io/pvc-protection
+      labels:
+        app: balance-fit
+        component: storage
+        environment: production
+      name: app-data
+      namespace: balance-fit-prd
+      resourceVersion: "169339321"
+      uid: b374dcf1-5073-4638-9ab2-e55bf88ac172
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 20Gi
+      storageClassName: ocs-storagecluster-ceph-rbd
+      volumeMode: Filesystem
+      volumeName: pvc-b374dcf1-5073-4638-9ab2-e55bf88ac172
+    status:
+      accessModes:
+        - ReadWriteOnce
+      capacity:
+        storage: 20Gi
+      phase: Bound
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      annotations:
+        pv.kubernetes.io/bind-completed: "yes"
+        pv.kubernetes.io/bound-by-controller: "yes"
+        volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+        volume.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+      creationTimestamp: "2025-06-04T09:41:13Z"
+      finalizers:
+        - kubernetes.io/pvc-protection
+      labels:
+        app.kubernetes.io/part-of: openshift-migration
+        directvolumemigration: 8276256e-75f5-4605-8df3-acf6f8c3d1b7
+        migration.openshift.io/migrated-by-migmigration: 567f3952-aa4a-46ab-b204-8168f264e76b
+        migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+      name: code
+      namespace: balance-fit-prd
+      resourceVersion: "144532266"
+      uid: f2cdee5c-6650-4234-882c-9a53887618ae
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: ocs-storagecluster-cephfs
+      volumeMode: Filesystem
+      volumeName: pvc-f2cdee5c-6650-4234-882c-9a53887618ae
+    status:
+      accessModes:
+        - ReadWriteMany
+      capacity:
+        storage: 10Gi
+      phase: Bound
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      annotations:
+        pv.kubernetes.io/bind-completed: "yes"
+        pv.kubernetes.io/bound-by-controller: "yes"
+        volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+        volume.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+      creationTimestamp: "2025-06-04T09:41:13Z"
+      finalizers:
+        - kubernetes.io/pvc-protection
+      labels:
+        app.kubernetes.io/part-of: openshift-migration
+        directvolumemigration: 8276256e-75f5-4605-8df3-acf6f8c3d1b7
+        migration.openshift.io/migrated-by-migmigration: 567f3952-aa4a-46ab-b204-8168f264e76b
+        migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+      name: efit-vol01
+      namespace: balance-fit-prd
+      resourceVersion: "144532276"
+      uid: 8c48445e-ebe8-4f14-8262-c406adc7756b
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: ocs-storagecluster-cephfs
+      volumeMode: Filesystem
+      volumeName: pvc-8c48445e-ebe8-4f14-8262-c406adc7756b
+    status:
+      accessModes:
+        - ReadWriteMany
+      capacity:
+        storage: 10Gi
+      phase: Bound
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"app":"mysql","component":"storage","environment":"production"},"name":"mysql-data","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"50Gi"}},"storageClassName":"ocs-storagecluster-ceph-rbd"}}
+        pv.kubernetes.io/bind-completed: "yes"
+        pv.kubernetes.io/bound-by-controller: "yes"
+        volume.beta.kubernetes.io/storage-provisioner: openshift-storage.rbd.csi.ceph.com
+        volume.kubernetes.io/storage-provisioner: openshift-storage.rbd.csi.ceph.com
+      creationTimestamp: "2025-07-01T11:44:40Z"
+      finalizers:
+        - kubernetes.io/pvc-protection
+      labels:
+        app: mysql
+        component: storage
+        environment: production
+      name: mysql-data
+      namespace: balance-fit-prd
+      resourceVersion: "169339474"
+      uid: 50df19b7-7cb5-44c9-b672-4366c0e7f4f2
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 50Gi
+      storageClassName: ocs-storagecluster-ceph-rbd
+      volumeMode: Filesystem
+      volumeName: pvc-50df19b7-7cb5-44c9-b672-4366c0e7f4f2
+    status:
+      accessModes:
+        - ReadWriteOnce
+      capacity:
+        storage: 50Gi
+      phase: Bound
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      annotations:
+        pv.kubernetes.io/bind-completed: "yes"
+        pv.kubernetes.io/bound-by-controller: "yes"
+        volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+        volume.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+      creationTimestamp: "2025-06-04T09:41:13Z"
+      finalizers:
+        - kubernetes.io/pvc-protection
+      labels:
+        app: mysql-app
+        app.kubernetes.io/part-of: openshift-migration
+        directvolumemigration: 8276256e-75f5-4605-8df3-acf6f8c3d1b7
+        migration.openshift.io/migrated-by-migmigration: 567f3952-aa4a-46ab-b204-8168f264e76b
+        migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+      name: mysql-pv-claim
+      namespace: balance-fit-prd
+      resourceVersion: "144532272"
+      uid: 75d71929-7d73-46af-a764-60508e7e2b1b
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: ocs-storagecluster-cephfs
+      volumeMode: Filesystem
+      volumeName: pvc-75d71929-7d73-46af-a764-60508e7e2b1b
+    status:
+      accessModes:
+        - ReadWriteOnce
+      capacity:
+        storage: 10Gi
+      phase: Bound
+kind: List
+metadata: {}

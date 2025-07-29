@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  annotations:
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/version: 1.0.0
+    cluster: ocp-prd
+    deployment.kubernetes.io/desired-replicas: "2"
+    deployment.kubernetes.io/max-replicas: "3"
+    environment: production
+  labels:
+    app: efit
+    app.kubernetes.io/name: balance-fit
+    app.kubernetes.io/part-of: balance-fit-stack
+    component: backend
+    environment: production
+    pod-template-hash: 78fd9f57f5
+  name: efit-78fd9f57f5
+  namespace: balance-fit-prd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: efit
+      app.kubernetes.io/name: balance-fit
+      app.kubernetes.io/part-of: balance-fit-stack
+      environment: production
+      pod-template-hash: 78fd9f57f5
+  template:
+    metadata:
+      annotations:
+        app.kubernetes.io/managed-by: argocd
+        app.kubernetes.io/version: 1.0.0
+        cluster: ocp-prd
+        environment: production
+      creationTimestamp: null
+      labels:
+        app: efit
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        component: backend
+        environment: production
+        pod-template-hash: 78fd9f57f5
+    spec:
+      containers:
+        - env:
+            - name: ENVIRONMENT
+              value: production
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_HOST
+                  name: mysql-config
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_DATABASE
+                  name: mysql-config
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: DB_USERNAME
+                  name: mysql-secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DB_PASSWORD
+                  name: mysql-secret
+          image: quay.apps.ocp.kohlerco.com/kohler-base-images/efit:latest
+          imagePullPolicy: Always
+          name: efit
+          ports:
+            - containerPort: 9000
+              name: php-fpm
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 200m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /code
+              name: app-data
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: app-data
+          persistentVolumeClaim:
+            claimName: app-data

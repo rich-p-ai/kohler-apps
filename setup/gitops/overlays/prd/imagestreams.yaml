@@ -1,0 +1,42 @@
+apiVersion: v1
+items:
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      annotations:
+        openshift.io/image.dockerRepositoryCheck: "2025-06-30T12:47:03Z"
+      creationTimestamp: "2025-06-30T12:47:03Z"
+      generation: 1
+      name: nginx-unprivileged
+      namespace: balance-fit-prd
+      resourceVersion: "168464950"
+      uid: 37e440b2-5c70-4eaa-90cb-17deea20e706
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - annotations: null
+          from:
+            kind: DockerImage
+            name: quay.apps.ocp.kohlerco.com/kohler-base-images/nginx-unprivileged:latest
+          generation: 1
+          importPolicy:
+            importMode: Legacy
+          name: latest
+          referencePolicy:
+            type: Source
+    status:
+      dockerImageRepository: image-registry.openshift-image-registry.svc:5000/balance-fit-prd/nginx-unprivileged
+      publicDockerImageRepository: default-route-openshift-image-registry.apps.ocp-prd.kohlerco.com/balance-fit-prd/nginx-unprivileged
+      tags:
+        - conditions:
+            - generation: 1
+              lastTransitionTime: "2025-06-30T12:47:03Z"
+              message: 'Internal error occurred: quay.apps.ocp.kohlerco.com/kohler-base-images/nginx-unprivileged:latest: Get "https://quay.apps.ocp.kohlerco.com/v2/": EOF'
+              reason: InternalError
+              status: "False"
+              type: ImportSuccess
+          items: null
+          tag: latest
+kind: List
+metadata: {}

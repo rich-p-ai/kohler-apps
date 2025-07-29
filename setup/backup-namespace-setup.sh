@@ -14,10 +14,10 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration - MODIFY THESE VALUES
-SOURCE_CLUSTER="https://api.ocp-prd.kohlerco.com:6443"
-SOURCE_NAMESPACE=""  # Will be prompted if not set
-GITHUB_REPO_URL=""   # Will be prompted if not set
-GITHUB_REPO_NAME=""  # Will be prompted if not set
+SOURCE_CLUSTER=""            # Will be detected from current context
+SOURCE_NAMESPACE=""          # Will be prompted if not set
+GITHUB_REPO_URL=""           # Will be prompted if not set
+GITHUB_REPO_NAME=""          # Will be prompted if not set
 ARGOCD_NAMESPACE="openshift-gitops"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 
@@ -116,26 +116,53 @@ create_directories() {
     print_success "Directory structure created"
 }
 
-# Login to source cluster
-login_to_cluster() {
-    print_section "CLUSTER LOGIN"
+# Verify cluster connectivity and namespace access
+verify_cluster_access() {
+    print_section "CLUSTER VERIFICATION"
     
-    print_info "Logging into source cluster: $SOURCE_CLUSTER"
-    print_info "Please provide your credentials when prompted"
+    print_info "Verifying access to current OpenShift cluster"
+    print_info "Assuming you are already authenticated to the cluster"
     
-    oc login "$SOURCE_CLUSTER" || {
-        print_error "Failed to login to source cluster"
-        exit 1
-    }
-    
-    # Verify namespace exists
-    if ! oc get namespace "$SOURCE_NAMESPACE" &>/dev/null; then
-        print_error "Namespace '$SOURCE_NAMESPACE' not found on source cluster"
+    # Check if we can connect to the cluster
+    if ! oc cluster-info &>/dev/null; then
+        print_error "Cannot connect to OpenShift cluster"
+        print_error "Please ensure you are logged in with: oc login <cluster-url> --token=<your-token>"
         exit 1
     fi
     
-    print_success "Successfully logged into source cluster"
-    print_info "Using namespace: $SOURCE_NAMESPACE"
+    # Get current context and cluster info
+    SOURCE_CLUSTER=$(oc config view --minify -o jsonpath='{.clusters[0].cluster.server}' 2>/dev/null)
+    current_user=$(oc whoami 2>/dev/null)
+    
+    if [[ -z "$current_user" ]]; then
+        print_error "Not authenticated to any OpenShift cluster"
+        print_error "Please login first with: oc login <cluster-url> --token=<your-token>"
+        exit 1
+    fi
+    
+    if [[ -z "$SOURCE_CLUSTER" ]]; then
+        print_error "Cannot determine cluster server URL"
+        exit 1
+    fi
+    
+    print_success "Connected to cluster as user: $current_user"
+    print_info "Cluster server: $SOURCE_CLUSTER"
+    
+    # Verify namespace exists and we have access
+    if ! oc get namespace "$SOURCE_NAMESPACE" &>/dev/null; then
+        print_error "Namespace '$SOURCE_NAMESPACE' not found or no access"
+        print_error "Available namespaces:"
+        oc get namespaces --no-headers 2>/dev/null | head -10 | awk '{print "  - " $1}' || print_error "Cannot list namespaces"
+        exit 1
+    fi
+    
+    # Check permissions in the namespace
+    if ! oc get pods -n "$SOURCE_NAMESPACE" &>/dev/null; then
+        print_warning "Limited access to namespace '$SOURCE_NAMESPACE' - backup may be incomplete"
+    fi
+    
+    print_success "Verified access to namespace: $SOURCE_NAMESPACE"
+    print_info "Using cluster: $SOURCE_CLUSTER"
 }
 
 # Export all resources from source namespace
@@ -525,7 +552,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration (set during initial setup)
-SOURCE_CLUSTER="SOURCE_CLUSTER_PLACEHOLDER"
+SOURCE_CLUSTER=""  # Will be detected from current context
 SOURCE_NAMESPACE="SOURCE_NAMESPACE_PLACEHOLDER"
 GITHUB_REPO_URL="GITHUB_REPO_URL_PLACEHOLDER"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
@@ -562,19 +589,36 @@ print_error() {
 mkdir -p "$DAILY_DIR/raw"
 mkdir -p "$DAILY_DIR/cleaned"
 
-# Login to cluster
-print_section "CLUSTER LOGIN"
-print_info "Logging into cluster: $SOURCE_CLUSTER"
+# Verify cluster access
+print_section "CLUSTER VERIFICATION"
+print_info "Verifying access to current OpenShift cluster"
 
-if ! oc login "$SOURCE_CLUSTER" --token="$(cat ~/.kube/token 2>/dev/null || echo '')" &>/dev/null; then
-    print_info "Token login failed, prompting for credentials"
-    oc login "$SOURCE_CLUSTER" || {
-        print_error "Failed to login to cluster"
-        exit 1
-    }
+# Check if we can connect to the cluster
+if ! oc cluster-info &>/dev/null; then
+    print_error "Cannot connect to OpenShift cluster"
+    print_error "Please ensure you are logged in with: oc login <cluster-url> --token=<your-token>"
+    exit 1
 fi
 
-print_success "Successfully logged into cluster"
+# Get current cluster info
+SOURCE_CLUSTER=$(oc config view --minify -o jsonpath='{.clusters[0].cluster.server}' 2>/dev/null)
+current_user=$(oc whoami 2>/dev/null)
+
+if [[ -z "$current_user" ]]; then
+    print_error "Not authenticated to any OpenShift cluster"
+    exit 1
+fi
+
+print_success "Connected to cluster as user: $current_user"
+print_info "Using cluster: $SOURCE_CLUSTER"
+
+# Verify namespace access
+if ! oc get namespace "$SOURCE_NAMESPACE" &>/dev/null; then
+    print_error "Cannot access namespace '$SOURCE_NAMESPACE'"
+    exit 1
+fi
+
+print_success "Verified access to namespace: $SOURCE_NAMESPACE"
 
 # Export current state
 print_section "EXPORTING CURRENT NAMESPACE STATE"
@@ -754,7 +798,6 @@ fi
 SCRIPT_EOF
     
     # Replace placeholders in the daily backup script
-    sed -i "s|SOURCE_CLUSTER_PLACEHOLDER|$SOURCE_CLUSTER|g" "$SCRIPTS_DIR/daily-backup.sh"
     sed -i "s|SOURCE_NAMESPACE_PLACEHOLDER|$SOURCE_NAMESPACE|g" "$SCRIPTS_DIR/daily-backup.sh"
     sed -i "s|GITHUB_REPO_URL_PLACEHOLDER|$GITHUB_REPO_URL|g" "$SCRIPTS_DIR/daily-backup.sh"
     
@@ -886,8 +929,8 @@ Daily backups are automated using:
 
 ### Deploy the ArgoCD Application
 \`\`\`bash
-# Login to target cluster
-oc login $SOURCE_CLUSTER
+# Login to target cluster (if not already logged in)
+oc login <your-cluster-url> --token=<your-token>
 
 # Deploy ArgoCD application
 oc apply -f gitops/argocd-application.yaml
@@ -1093,7 +1136,7 @@ main() {
     prompt_configuration
     check_prerequisites
     create_directories
-    login_to_cluster
+    verify_cluster_access
     export_resources
     clean_resources
     create_gitops_structure

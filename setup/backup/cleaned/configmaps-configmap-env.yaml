@@ -1,0 +1,56 @@
+apiVersion: v1
+data:
+  env: |
+    APP_NAME=Efit
+    APP_ENV=dev
+    APP_KEY=base64:159bVuObk3lStDk+D2/LC3QHpcXvkYd+fBrrepUN5kI=
+    APP_DEBUG=true
+    APP_LOG_LEVEL=debug
+    APP_URL=http://efit-prd.apps.ocp4.kohlerco.com/
+    APP_BASE_PATH="src"
+
+    DB_CONNECTION=mysql
+    DB_HOST=mysql-service
+    DB_PORT=3306
+    DB_DATABASE=efit
+    DB_USERNAME=root
+    DB_PASSWORD=123456
+
+    BROADCAST_DRIVER=log
+    CACHE_DRIVER=file
+    SESSION_DRIVER=file
+    QUEUE_DRIVER=database
+
+    REDIS_HOST=127.0.0.1
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
+
+    MAIL_DRIVER=smtp
+    MAIL_HOST=
+    MAIL_PORT=
+    MAIL_USERNAME=
+    MAIL_PASSWORD=
+    MAIL_ENCRYPTION=tls
+    MAIL_FROM_ADDRESS=
+    MAIL_FROM_NAME=
+
+    PATH_FILES=/code/dataXML/
+    CACHE_TIME = 1440
+    PREFIX_XML = -aut
+    PREFIX_OLD = -nfe
+    MSG_CONT="Servidor fora do ar"
+    TIME_ZONE="America/Sao_Paulo"
+    APP_LOG=single
+    QUEUE_CONNECTION=database
+  envphp: "<?php\n /*\n     |--------------------------------------------------------------------------\n     | Configs to comunicate Efit legado\n     |--------------------------------------------------------------------------\n     |\n */\n\n return [\n   'OLD_EFIT' => 'http://efit-prd.apps.ocp4.kohlerco.com/efit/',\n   \n   'OLD_EFIT_ABSOLUTE' => '/code/dataXML/',\n   \n   'CACHE_TIME' => '1440',\n   \n   'PREFIX_XML' => '-aut',\n   \n   'PREFIX_OLD' => '-nfe',\n   \n   'MSG_CONT' => 'Servidor fora do ar',\n   \n   'APP_LOG' => 'single',\n   \n   'TIME_ZONE' => 'America/Bahia',\n ];\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    openshift.io/migration-registry: ""
+  labels:
+    migration.openshift.io/migrated-by-migmigration: 0ed510f5-66f0-409c-a1a0-c7e18d3d47ff
+    migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+    velero.io/backup-name: migration-1e0ed-initial-sbf8k
+    velero.io/restore-name: migration-1e0ed-final-c9chn
+  name: configmap-env
+  namespace: balance-fit-prd

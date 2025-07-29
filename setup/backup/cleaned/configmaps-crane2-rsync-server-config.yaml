@@ -1,0 +1,53 @@
+apiVersion: v1
+data:
+  rsyncd.conf: |+
+    syslog facility = local7
+    read only = no
+    list = yes
+    log file = /dev/stdout
+    max verbosity = 4
+    auth users = root
+    hosts allow = ::1, 127.0.0.1, localhost
+
+
+    use chroot = no
+
+
+    munge symlinks = no
+
+
+    [650b166f93a3ca00019e8a78c3c22d6b]
+        comment = archive for balance-fit-prd/mysql-pv-claim
+        path = /mnt/balance-fit-prd/650b166f93a3ca00019e8a78c3c22d6b
+        list = yes
+        read only = false
+        auth users = root
+        secrets file = /etc/rsync-secret/rsyncd.secrets
+
+    [af2d68eb576e63a4c466e188b6428711]
+        comment = archive for balance-fit-prd/efit-vol01
+        path = /mnt/balance-fit-prd/af2d68eb576e63a4c466e188b6428711
+        list = yes
+        read only = false
+        auth users = root
+        secrets file = /etc/rsync-secret/rsyncd.secrets
+
+    [c13367945d5d4c91047b3b50234aa7ab]
+        comment = archive for balance-fit-prd/code
+        path = /mnt/balance-fit-prd/c13367945d5d4c91047b3b50234aa7ab
+        list = yes
+        read only = false
+        auth users = root
+        secrets file = /etc/rsync-secret/rsyncd.secrets
+
+kind: ConfigMap
+metadata:
+  labels:
+    app: directvolumemigration-rsync-transfer
+    app.kubernetes.io/part-of: openshift-migration
+    directvolumemigration: 967f6a03-b630-419e-b618-9b69e01d0284
+    migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+    owner: directvolumemigration
+    purpose: rsync
+  name: crane2-rsync-server-config
+  namespace: balance-fit-prd

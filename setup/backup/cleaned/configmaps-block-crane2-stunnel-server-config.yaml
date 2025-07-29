@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  stunnel.conf: |
+    foreground = yes
+    pid =
+    socket = l:TCP_NODELAY=1
+    socket = r:TCP_NODELAY=1
+    debug = 7
+    sslVersion = TLSv1.2
+    [rsync]
+    accept = 6443
+    connect = 2222
+    key = /etc/stunnel/certs/tls.key
+    cert = /etc/stunnel/certs/tls.crt
+    TIMEOUTclose = 0
+kind: ConfigMap
+metadata:
+  labels:
+    app: directvolumemigration-rsync-transfer-block
+    app.kubernetes.io/part-of: openshift-migration
+    directvolumemigration: 967f6a03-b630-419e-b618-9b69e01d0284
+    migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+    owner: directvolumemigration
+    purpose: rsync
+  name: block-crane2-stunnel-server-config
+  namespace: balance-fit-prd

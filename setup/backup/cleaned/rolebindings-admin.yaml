@@ -1,0 +1,32 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    openshift.io/migration-registry: ""
+  labels:
+    migration.openshift.io/migrated-by-migmigration: 0ed510f5-66f0-409c-a1a0-c7e18d3d47ff
+    migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+    velero.io/backup-name: migration-1e0ed-initial-sbf8k
+    velero.io/restore-name: migration-1e0ed-final-c9chn
+  name: admin
+  namespace: balance-fit-prd
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: kube:admin
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: KO95056
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: ko16j89
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: KOCEJC7
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: KO161D2

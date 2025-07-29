@@ -1,0 +1,20 @@
+# Backup artifacts
+backup/raw/
+backup/daily/*/raw/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

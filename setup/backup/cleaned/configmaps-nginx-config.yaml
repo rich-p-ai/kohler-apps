@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  site.conf: "server {\n  listen 8030 default_server;\n  listen [::]:8030 default_server;\n  index index.php index.html;\n  error_log  /var/log/nginx/error.log;\n  access_log /var/log/nginx/access.log;\n  root /code/public;\n  add_header X-Frame-Options \"SAMEORIGIN\";\n  add_header X-XSS-Protection \"1; mode=block\";\n  add_header X-Content-Type-Options \"nosniff\";\n  \n  location / {\n      try_files $uri $uri/ /index.php?$query_string;\n  }\n  \n  location ~ \\.php$ {\n      try_files $uri =404;\n      fastcgi_split_path_info ^(.+\\.php)(/.+)$;\n      fastcgi_pass efit:9000;\n      fastcgi_index index.php;\n      include fastcgi_params;\n      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n      fastcgi_param PATH_INFO $fastcgi_path_info;\n    }\n}\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/version: 1.0.0
+    cluster: ocp-prd
+    environment: production
+  labels:
+    app: nginx
+    app.kubernetes.io/instance: balance-fit-prod
+    app.kubernetes.io/name: balance-fit
+    app.kubernetes.io/part-of: balance-fit-stack
+    component: web
+    environment: production
+  name: nginx-config
+  namespace: balance-fit-prd

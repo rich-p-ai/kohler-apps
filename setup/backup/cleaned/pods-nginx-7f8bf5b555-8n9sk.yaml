@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/version: 1.0.0
+    cluster: ocp-prd
+    environment: production
+    k8s.ovn.org/pod-networks: '{"default":{"ip_addresses":["10.129.2.196/23"],"mac_address":"0a:58:0a:81:02:c4","gateway_ips":["10.129.2.1"],"routes":[{"dest":"10.128.0.0/14","nextHop":"10.129.2.1"},{"dest":"172.30.0.0/16","nextHop":"10.129.2.1"},{"dest":"169.254.169.5/32","nextHop":"10.129.2.1"},{"dest":"100.64.0.0/16","nextHop":"10.129.2.1"}],"ip_address":"10.129.2.196/23","gateway_ip":"10.129.2.1"}}'
+    openshift.io/scc: restricted-v2
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
+  generateName: nginx-7f8bf5b555-
+  labels:
+    app: nginx
+    app.kubernetes.io/name: balance-fit
+    app.kubernetes.io/part-of: balance-fit-stack
+    component: web
+    environment: production
+    pod-template-hash: 7f8bf5b555
+  name: nginx-7f8bf5b555-8n9sk
+  namespace: balance-fit-prd
+spec:
+  containers:
+    - command:
+        - sh
+        - -c
+        - |
+          cp /etc/nginx/fastcgi_params /tmp/fastcgi_params && \
+          echo "pid /tmp/nginx.pid; events { worker_connections 1024; } http { include /etc/nginx/mime.types; default_type application/octet-stream; include /etc/nginx/conf.d/site.conf; }" > /tmp/nginx.conf && \
+          exec nginx -c /tmp/nginx.conf -g "daemon off;"
+      env:
+        - name: ENVIRONMENT
+          value: production
+      image: nginxinc/nginx-unprivileged:1.25-alpine
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 8030
+          scheme: HTTP
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: nginx
+      ports:
+        - containerPort: 8030
+          name: http
+          protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /
+          port: 8030
+          scheme: HTTP
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 200m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        runAsNonRoot: true
+        runAsUser: 1000870000
+        seccompProfile:
+          type: RuntimeDefault
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: nginx-config
+          readOnly: true
+        - mountPath: /code
+          name: app-data
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: kube-api-access-qmv9x
+          readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  imagePullSecrets:
+    - name: default-dockercfg-5hbvj
+    - name: dockerhub-secret
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    fsGroup: 1000870000
+    runAsNonRoot: true
+    seLinuxOptions:
+      level: s0:c30,c0
+    seccompProfile:
+      type: RuntimeDefault
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+  volumes:
+    - configMap:
+        defaultMode: 420
+        name: nginx-config
+      name: nginx-config
+    - name: app-data
+      persistentVolumeClaim:
+        claimName: app-data
+    - name: kube-api-access-qmv9x
+      projected:
+        defaultMode: 420
+        sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              items:
+                - key: ca.crt
+                  path: ca.crt
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+                - fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+                  path: namespace
+          - configMap:
+              items:
+                - key: service-ca.crt
+                  path: service-ca.crt
+              name: openshift-service-ca.crt

@@ -1,0 +1,21 @@
+apiVersion: v1
+data:
+  DB_DATABASE: efit
+  DB_HOST: mysql-service
+  DB_PORT: "3306"
+kind: ConfigMap
+metadata:
+  annotations:
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/version: 1.0.0
+    cluster: ocp-prd
+    environment: production
+  labels:
+    app: mysql
+    app.kubernetes.io/instance: balance-fit-prod
+    app.kubernetes.io/name: balance-fit
+    app.kubernetes.io/part-of: balance-fit-stack
+    component: database
+    environment: production
+  name: mysql-config
+  namespace: balance-fit-prd

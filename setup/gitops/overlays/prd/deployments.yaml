@@ -1,0 +1,546 @@
+apiVersion: v1
+items:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        app.kubernetes.io/managed-by: argocd
+        app.kubernetes.io/version: 1.0.0
+        cluster: ocp-prd
+        deployment.kubernetes.io/revision: "1"
+        environment: production
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"efit","app.kubernetes.io/instance":"balance-fit-prod","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"backend","environment":"production"},"name":"efit","namespace":"balance-fit-prd"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"efit","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","environment":"production"}},"template":{"metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"efit","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"backend","environment":"production"}},"spec":{"containers":[{"env":[{"name":"ENVIRONMENT","value":"production"},{"name":"DB_HOST","valueFrom":{"configMapKeyRef":{"key":"DB_HOST","name":"mysql-config"}}},{"name":"DB_DATABASE","valueFrom":{"configMapKeyRef":{"key":"DB_DATABASE","name":"mysql-config"}}},{"name":"DB_USERNAME","valueFrom":{"secretKeyRef":{"key":"DB_USERNAME","name":"mysql-secret"}}},{"name":"DB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"DB_PASSWORD","name":"mysql-secret"}}}],"image":"quay.apps.ocp.kohlerco.com/kohler-base-images/efit:latest","name":"efit","ports":[{"containerPort":9000,"name":"php-fpm","protocol":"TCP"}],"resources":{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"200m","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"volumeMounts":[{"mountPath":"/code","name":"app-data"}]}],"securityContext":{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"serviceAccountName":"default","volumes":[{"name":"app-data","persistentVolumeClaim":{"claimName":"app-data"}}]}}}}
+      creationTimestamp: "2025-07-01T11:41:01Z"
+      generation: 3
+      labels:
+        app: efit
+        app.kubernetes.io/instance: balance-fit-prod
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        component: backend
+        environment: production
+      name: efit
+      namespace: balance-fit-prd
+      resourceVersion: "190034877"
+      uid: 9f08839c-9775-44d6-b2ec-578f499cbb95
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 2
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: efit
+          app.kubernetes.io/name: balance-fit
+          app.kubernetes.io/part-of: balance-fit-stack
+          environment: production
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          annotations:
+            app.kubernetes.io/managed-by: argocd
+            app.kubernetes.io/version: 1.0.0
+            cluster: ocp-prd
+            environment: production
+          creationTimestamp: null
+          labels:
+            app: efit
+            app.kubernetes.io/name: balance-fit
+            app.kubernetes.io/part-of: balance-fit-stack
+            component: backend
+            environment: production
+        spec:
+          containers:
+            - env:
+                - name: ENVIRONMENT
+                  value: production
+                - name: DB_HOST
+                  valueFrom:
+                    configMapKeyRef:
+                      key: DB_HOST
+                      name: mysql-config
+                - name: DB_DATABASE
+                  valueFrom:
+                    configMapKeyRef:
+                      key: DB_DATABASE
+                      name: mysql-config
+                - name: DB_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      key: DB_USERNAME
+                      name: mysql-secret
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: DB_PASSWORD
+                      name: mysql-secret
+              image: quay.apps.ocp.kohlerco.com/kohler-base-images/efit:latest
+              imagePullPolicy: Always
+              name: efit
+              ports:
+                - containerPort: 9000
+                  name: php-fpm
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1Gi
+                requests:
+                  cpu: 200m
+                  memory: 512Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                seccompProfile:
+                  type: RuntimeDefault
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /code
+                  name: app-data
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          serviceAccount: default
+          serviceAccountName: default
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - name: app-data
+              persistentVolumeClaim:
+                claimName: app-data
+    status:
+      conditions:
+        - lastTransitionTime: "2025-07-01T11:41:01Z"
+          lastUpdateTime: "2025-07-01T11:41:01Z"
+          message: Deployment does not have minimum availability.
+          reason: MinimumReplicasUnavailable
+          status: "False"
+          type: Available
+        - lastTransitionTime: "2025-07-24T06:05:21Z"
+          lastUpdateTime: "2025-07-24T06:05:21Z"
+          message: ReplicaSet "efit-78fd9f57f5" has timed out progressing.
+          reason: ProgressDeadlineExceeded
+          status: "False"
+          type: Progressing
+      observedGeneration: 3
+      replicas: 2
+      unavailableReplicas: 2
+      updatedReplicas: 2
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        app.kubernetes.io/managed-by: argocd
+        app.kubernetes.io/version: 1.0.0
+        cluster: ocp-prd
+        deployment.kubernetes.io/revision: "1"
+        environment: production
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"mysql","app.kubernetes.io/instance":"balance-fit-prod","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"database","environment":"production"},"name":"mysql","namespace":"balance-fit-prd"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"mysql","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","environment":"production"}},"template":{"metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"mysql","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"database","environment":"production"}},"spec":{"containers":[{"env":[{"name":"MYSQL_USER","valueFrom":{"secretKeyRef":{"key":"DB_USERNAME","name":"mysql-secret"}}},{"name":"MYSQL_PASSWORD","valueFrom":{"secretKeyRef":{"key":"DB_PASSWORD","name":"mysql-secret"}}},{"name":"MYSQL_DATABASE","valueFrom":{"configMapKeyRef":{"key":"DB_DATABASE","name":"mysql-config"}}},{"name":"MYSQL_ROOT_PASSWORD","valueFrom":{"secretKeyRef":{"key":"MYSQL_ROOT_PASSWORD","name":"mysql-secret"}}}],"image":"registry.redhat.io/rhel8/mysql-80:latest","livenessProbe":{"exec":{"command":["/bin/sh","-i","-c","MYSQL_PWD=\"$MYSQL_PASSWORD\" mysqladmin -u $MYSQL_USER ping"]},"initialDelaySeconds":30,"timeoutSeconds":5},"name":"mysql","ports":[{"containerPort":3306,"name":"mysql","protocol":"TCP"}],"readinessProbe":{"exec":{"command":["/bin/sh","-i","-c","MYSQL_PWD=\"$MYSQL_PASSWORD\" mysqladmin -u $MYSQL_USER ping"]},"initialDelaySeconds":5,"timeoutSeconds":1},"resources":{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"200m","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"volumeMounts":[{"mountPath":"/var/lib/mysql","name":"mysql-data"}]}],"securityContext":{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"serviceAccountName":"default","volumes":[{"name":"mysql-data","persistentVolumeClaim":{"claimName":"mysql-data"}}]}}}}
+      creationTimestamp: "2025-07-01T11:41:01Z"
+      generation: 3
+      labels:
+        app: mysql
+        app.kubernetes.io/instance: balance-fit-prod
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        component: database
+        environment: production
+      name: mysql
+      namespace: balance-fit-prd
+      resourceVersion: "188831680"
+      uid: ee563113-bf8d-4b9f-aa65-d9ed93e1f2c5
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 1
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: mysql
+          app.kubernetes.io/name: balance-fit
+          app.kubernetes.io/part-of: balance-fit-stack
+          environment: production
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          annotations:
+            app.kubernetes.io/managed-by: argocd
+            app.kubernetes.io/version: 1.0.0
+            cluster: ocp-prd
+            environment: production
+          creationTimestamp: null
+          labels:
+            app: mysql
+            app.kubernetes.io/name: balance-fit
+            app.kubernetes.io/part-of: balance-fit-stack
+            component: database
+            environment: production
+        spec:
+          containers:
+            - env:
+                - name: MYSQL_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: DB_USERNAME
+                      name: mysql-secret
+                - name: MYSQL_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: DB_PASSWORD
+                      name: mysql-secret
+                - name: MYSQL_DATABASE
+                  valueFrom:
+                    configMapKeyRef:
+                      key: DB_DATABASE
+                      name: mysql-config
+                - name: MYSQL_ROOT_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: MYSQL_ROOT_PASSWORD
+                      name: mysql-secret
+              image: registry.redhat.io/rhel8/mysql-80:latest
+              imagePullPolicy: Always
+              livenessProbe:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -i
+                    - -c
+                    - MYSQL_PWD="$MYSQL_PASSWORD" mysqladmin -u $MYSQL_USER ping
+                failureThreshold: 3
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 5
+              name: mysql
+              ports:
+                - containerPort: 3306
+                  name: mysql
+                  protocol: TCP
+              readinessProbe:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -i
+                    - -c
+                    - MYSQL_PWD="$MYSQL_PASSWORD" mysqladmin -u $MYSQL_USER ping
+                failureThreshold: 3
+                initialDelaySeconds: 5
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1Gi
+                requests:
+                  cpu: 200m
+                  memory: 512Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                seccompProfile:
+                  type: RuntimeDefault
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /var/lib/mysql
+                  name: mysql-data
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          serviceAccount: default
+          serviceAccountName: default
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - name: mysql-data
+              persistentVolumeClaim:
+                claimName: mysql-data
+    status:
+      availableReplicas: 1
+      conditions:
+        - lastTransitionTime: "2025-07-01T11:41:01Z"
+          lastUpdateTime: "2025-07-01T11:45:22Z"
+          message: ReplicaSet "mysql-5b54d44bc4" has successfully progressed.
+          reason: NewReplicaSetAvailable
+          status: "True"
+          type: Progressing
+        - lastTransitionTime: "2025-07-22T23:32:30Z"
+          lastUpdateTime: "2025-07-22T23:32:30Z"
+          message: Deployment has minimum availability.
+          reason: MinimumReplicasAvailable
+          status: "True"
+          type: Available
+      observedGeneration: 3
+      readyReplicas: 1
+      replicas: 1
+      updatedReplicas: 1
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        deployment.kubernetes.io/revision: "1"
+        openshift.io/backup-registry-hostname: image-registry.openshift-image-registry.svc:5000
+        openshift.io/backup-server-version: "1.25"
+        openshift.io/migration-registry: ""
+        openshift.io/restore-registry-hostname: image-registry.openshift-image-registry.svc:5000
+        openshift.io/restore-server-version: "1.29"
+      creationTimestamp: "2025-06-04T16:49:53Z"
+      generation: 1
+      labels:
+        app: mysql-app
+        migration.openshift.io/migrated-by-migmigration: 0ed510f5-66f0-409c-a1a0-c7e18d3d47ff
+        migration.openshift.io/migrated-by-migplan: bd694ade-91df-4eac-8fe7-e614f02f8274
+        velero.io/backup-name: migration-1e0ed-initial-sbf8k
+        velero.io/restore-name: migration-1e0ed-final-c9chn
+      name: mysql-app
+      namespace: balance-fit-prd
+      resourceVersion: "188826659"
+      uid: 13adcf7e-f4cb-4453-a669-8c232c6256b0
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 1
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: mysql-app
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: mysql-app
+          name: mysql-app
+        spec:
+          containers:
+            - env:
+                - name: MYSQL_DATABASE
+                  value: efit
+                - name: MYSQL_USER
+                  valueFrom:
+                    configMapKeyRef:
+                      key: DB_USERNAME
+                      name: mysql-app
+                - name: MYSQL_PASSWORD
+                  valueFrom:
+                    configMapKeyRef:
+                      key: DB_PASSWORD
+                      name: mysql-app
+                - name: MYSQL_ROOT_PASSWORD
+                  value: "123456"
+              image: mysql:5.7
+              imagePullPolicy: IfNotPresent
+              name: mysql-app
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /var/lib/mysql
+                  name: mysql-persistent-storage
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - name: mysql-persistent-storage
+              persistentVolumeClaim:
+                claimName: mysql-pv-claim
+    status:
+      availableReplicas: 1
+      conditions:
+        - lastTransitionTime: "2025-06-04T16:49:58Z"
+          lastUpdateTime: "2025-06-04T16:50:04Z"
+          message: ReplicaSet "mysql-app-7959b8f47b" has successfully progressed.
+          reason: NewReplicaSetAvailable
+          status: "True"
+          type: Progressing
+        - lastTransitionTime: "2025-07-22T23:29:52Z"
+          lastUpdateTime: "2025-07-22T23:29:52Z"
+          message: Deployment has minimum availability.
+          reason: MinimumReplicasAvailable
+          status: "True"
+          type: Available
+      observedGeneration: 1
+      readyReplicas: 1
+      replicas: 1
+      updatedReplicas: 1
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        app.kubernetes.io/managed-by: argocd
+        app.kubernetes.io/version: 1.0.0
+        cluster: ocp-prd
+        deployment.kubernetes.io/revision: "1"
+        environment: production
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"nginx","app.kubernetes.io/instance":"balance-fit-prod","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"web","environment":"production"},"name":"nginx","namespace":"balance-fit-prd"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"nginx","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","environment":"production"}},"template":{"metadata":{"annotations":{"app.kubernetes.io/managed-by":"argocd","app.kubernetes.io/version":"1.0.0","cluster":"ocp-prd","environment":"production"},"labels":{"app":"nginx","app.kubernetes.io/name":"balance-fit","app.kubernetes.io/part-of":"balance-fit-stack","component":"web","environment":"production"}},"spec":{"containers":[{"command":["sh","-c","cp /etc/nginx/fastcgi_params /tmp/fastcgi_params \u0026\u0026 \\\necho \"pid /tmp/nginx.pid; events { worker_connections 1024; } http { include /etc/nginx/mime.types; default_type application/octet-stream; include /etc/nginx/conf.d/site.conf; }\" \u003e /tmp/nginx.conf \u0026\u0026 \\\nexec nginx -c /tmp/nginx.conf -g \"daemon off;\"\n"],"env":[{"name":"ENVIRONMENT","value":"production"}],"image":"nginxinc/nginx-unprivileged:1.25-alpine","livenessProbe":{"httpGet":{"path":"/","port":8030},"initialDelaySeconds":30,"periodSeconds":10},"name":"nginx","ports":[{"containerPort":8030,"name":"http","protocol":"TCP"}],"readinessProbe":{"httpGet":{"path":"/","port":8030},"initialDelaySeconds":5,"periodSeconds":5},"resources":{"limits":{"cpu":"200m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"volumeMounts":[{"mountPath":"/etc/nginx/conf.d","name":"nginx-config","readOnly":true},{"mountPath":"/code","name":"app-data"}]}],"securityContext":{"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"serviceAccountName":"default","volumes":[{"configMap":{"name":"nginx-config"},"name":"nginx-config"},{"name":"app-data","persistentVolumeClaim":{"claimName":"app-data"}}]}}}}
+      creationTimestamp: "2025-07-01T12:06:25Z"
+      generation: 1
+      labels:
+        app: nginx
+        app.kubernetes.io/instance: balance-fit-prod
+        app.kubernetes.io/name: balance-fit
+        app.kubernetes.io/part-of: balance-fit-stack
+        component: web
+        environment: production
+      name: nginx
+      namespace: balance-fit-prd
+      resourceVersion: "190034880"
+      uid: 8cc8562b-7201-44e2-8328-a8a95f7ebee7
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 2
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: nginx
+          app.kubernetes.io/name: balance-fit
+          app.kubernetes.io/part-of: balance-fit-stack
+          environment: production
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          annotations:
+            app.kubernetes.io/managed-by: argocd
+            app.kubernetes.io/version: 1.0.0
+            cluster: ocp-prd
+            environment: production
+          creationTimestamp: null
+          labels:
+            app: nginx
+            app.kubernetes.io/name: balance-fit
+            app.kubernetes.io/part-of: balance-fit-stack
+            component: web
+            environment: production
+        spec:
+          containers:
+            - command:
+                - sh
+                - -c
+                - |
+                  cp /etc/nginx/fastcgi_params /tmp/fastcgi_params && \
+                  echo "pid /tmp/nginx.pid; events { worker_connections 1024; } http { include /etc/nginx/mime.types; default_type application/octet-stream; include /etc/nginx/conf.d/site.conf; }" > /tmp/nginx.conf && \
+                  exec nginx -c /tmp/nginx.conf -g "daemon off;"
+              env:
+                - name: ENVIRONMENT
+                  value: production
+              image: nginxinc/nginx-unprivileged:1.25-alpine
+              imagePullPolicy: IfNotPresent
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8030
+                  scheme: HTTP
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              name: nginx
+              ports:
+                - containerPort: 8030
+                  name: http
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /
+                  port: 8030
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 5
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources:
+                limits:
+                  cpu: 200m
+                  memory: 256Mi
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                seccompProfile:
+                  type: RuntimeDefault
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /etc/nginx/conf.d
+                  name: nginx-config
+                  readOnly: true
+                - mountPath: /code
+                  name: app-data
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          serviceAccount: default
+          serviceAccountName: default
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - configMap:
+                defaultMode: 420
+                name: nginx-config
+              name: nginx-config
+            - name: app-data
+              persistentVolumeClaim:
+                claimName: app-data
+    status:
+      conditions:
+        - lastTransitionTime: "2025-07-01T12:06:25Z"
+          lastUpdateTime: "2025-07-01T12:06:25Z"
+          message: Deployment does not have minimum availability.
+          reason: MinimumReplicasUnavailable
+          status: "False"
+          type: Available
+        - lastTransitionTime: "2025-07-24T06:05:21Z"
+          lastUpdateTime: "2025-07-24T06:05:21Z"
+          message: ReplicaSet "nginx-7f8bf5b555" has timed out progressing.
+          reason: ProgressDeadlineExceeded
+          status: "False"
+          type: Progressing
+      observedGeneration: 1
+      replicas: 2
+      unavailableReplicas: 2
+      updatedReplicas: 2
+kind: List
+metadata: {}
