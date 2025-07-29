@@ -21,10 +21,11 @@ GITHUB_REPO_NAME=""          # Will be prompted if not set
 ARGOCD_NAMESPACE="openshift-gitops"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 
-# Directory structure
-BACKUP_DIR="backup"
-GITOPS_DIR="gitops"
-SCRIPTS_DIR="scripts"
+# Directory structure (will be set after configuration)
+PROJECT_DIR=""               # Will be set to GITHUB_REPO_NAME
+BACKUP_DIR=""                # Will be set relative to PROJECT_DIR
+GITOPS_DIR=""                # Will be set relative to PROJECT_DIR
+SCRIPTS_DIR=""               # Will be set relative to PROJECT_DIR
 
 # Logging functions
 print_section() {
@@ -65,10 +66,17 @@ prompt_configuration() {
         read -p "Enter GitHub repository name (e.g., namespace-backup): " GITHUB_REPO_NAME
     fi
     
+    # Set directory paths based on repository name
+    PROJECT_DIR="$GITHUB_REPO_NAME"
+    BACKUP_DIR="$PROJECT_DIR/backup"
+    GITOPS_DIR="$PROJECT_DIR/gitops"
+    SCRIPTS_DIR="$PROJECT_DIR/scripts"
+    
     print_info "Configuration:"
     print_info "  Source Namespace: $SOURCE_NAMESPACE"
     print_info "  GitHub Repository: $GITHUB_REPO_URL"
     print_info "  Repository Name: $GITHUB_REPO_NAME"
+    print_info "  Project Directory: $PROJECT_DIR"
     
     read -p "Continue with this configuration? (y/N): " confirm
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
@@ -106,6 +114,17 @@ check_prerequisites() {
 create_directories() {
     print_section "CREATING DIRECTORY STRUCTURE"
     
+    # Check if project directory already exists
+    if [[ -d "$PROJECT_DIR" ]]; then
+        print_warning "Project directory '$PROJECT_DIR' already exists"
+        read -p "Continue and overwrite existing files? (y/N): " overwrite
+        if [[ ! "$overwrite" =~ ^[Yy]$ ]]; then
+            print_error "Setup cancelled - project directory already exists"
+            exit 1
+        fi
+    fi
+    
+    # Create project directory and subdirectories
     mkdir -p "$BACKUP_DIR/raw"
     mkdir -p "$BACKUP_DIR/cleaned"
     mkdir -p "$BACKUP_DIR/manifests"
@@ -113,7 +132,8 @@ create_directories() {
     mkdir -p "$GITOPS_DIR/overlays/prd"
     mkdir -p "$SCRIPTS_DIR"
     
-    print_success "Directory structure created"
+    print_success "Directory structure created in: $PROJECT_DIR"
+    print_info "Working directory: $(pwd)/$PROJECT_DIR"
 }
 
 # Verify cluster connectivity and namespace access
@@ -839,10 +859,20 @@ EOF
 initialize_git_repo() {
     print_section "INITIALIZING GIT REPOSITORY"
     
+    # Change to project directory
+    cd "$PROJECT_DIR" || {
+        print_error "Failed to change to project directory: $PROJECT_DIR"
+        exit 1
+    }
+    
+    print_info "Working in project directory: $(pwd)"
+    
     # Initialize git if not already initialized
     if [[ ! -d ".git" ]]; then
         git init
         print_info "Git repository initialized"
+    else
+        print_info "Git repository already exists"
     fi
     
     # Create .gitignore
@@ -1090,18 +1120,23 @@ show_next_steps() {
     echo "🎉 Namespace backup setup completed successfully!"
     echo ""
     echo "📋 Summary:"
+    echo "  ✅ Created project directory: $PROJECT_DIR"
     echo "  ✅ Exported all resources from namespace '$SOURCE_NAMESPACE'"
     echo "  ✅ Created GitOps structure with Kustomize"
     echo "  ✅ Generated ArgoCD application manifest"
     echo "  ✅ Created daily backup automation"
     echo "  ✅ Initialized Git repository with remote"
     echo ""
+    echo "📁 Project Location: $(pwd)"
+    echo ""
     echo "🚀 Next Steps:"
     echo ""
     echo "1. 📅 SETUP DAILY BACKUPS:"
+    echo "   cd $PROJECT_DIR"
     echo "   ./scripts/setup-cron.sh"
     echo ""
     echo "2. 🔄 DEPLOY ARGOCD APPLICATION (if not done already):"
+    echo "   cd $PROJECT_DIR"
     echo "   oc apply -f gitops/argocd-application.yaml"
     echo ""
     echo "3. 🌐 MONITOR ARGOCD:"
@@ -1109,6 +1144,7 @@ show_next_steps() {
     echo "   - Verify sync status and health"
     echo ""
     echo "4. ✅ VERIFY BACKUP:"
+    echo "   cd $PROJECT_DIR"
     echo "   ./scripts/daily-backup.sh  # Test manual backup"
     echo ""
     echo "5. 📊 MONITOR LOGS:"
