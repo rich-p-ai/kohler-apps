@@ -1,18 +1,64 @@
-# balance-fit-prd Namespace Backup
+# Kubernetes Namespace Backup Setup Tools
 
-This repository contains automated backup of the `balance-fit-prd` namespace using GitOps methodology with ArgoCD.
+This repository contains the setup tools and scripts for creating automated backups of Kubernetes namespaces using GitOps methodology with ArgoCD.
 
-## Overview
+## ⚠️ Important Note
+
+This repository contains the **setup tools**, not the actual backup data. When you run the setup script, it creates a separate project directory with its own git repository for the specific namespace backup.
+
+## What's Included
+
+- **`backup-namespace-setup.sh`** - Main setup script that creates backup infrastructure
+- **`daily-namespace-backup.sh`** - Standalone daily backup script  
+- **`NAMESPACE-BACKUP-README.md`** - Comprehensive documentation
+- **Setup tools and templates** for GitOps backup automation
+
+## Quick Start
+
+1. **Run the setup script:**
+   ```bash
+   ./backup-namespace-setup.sh
+   ```
+
+2. **Follow the prompts to configure:**
+   - Source namespace to backup
+   - GitHub repository URL for the backup
+   - Repository name (creates local project directory)
+
+3. **The script will create:**
+   - A local project directory named after your repository
+   - Complete GitOps structure with ArgoCD configuration
+   - Automated backup scripts and cron jobs
+   - Separate git repository for the backup project
+
+## Example: balance-fit-prd Namespace
+
+This repository was used to create the `balance-fit-prd` namespace backup:
+
+## Example: balance-fit-prd Namespace
+
+This repository was used to create the `balance-fit-prd` namespace backup:
+
+- **Source Namespace**: balance-fit-prd
+- **Backup Repository**: https://github.com/rich-p-ai/kohler-apps.git
+- **Project Directory**: `balance-fit-prd/` (excluded from this repo)
+- **Setup Date**: Tue, Jul 29, 2025  3:19:00 PM
+
+## Features
 
 This backup system provides:
 - **Automated daily backups** of all namespace resources
 - **GitOps deployment** using ArgoCD for infrastructure as code
 - **Version control** of all configuration changes
 - **Disaster recovery** capabilities
+- **Multi-namespace support** with organized project directories
 
-## Repository Structure
+## Project Structure Created by Setup
+
+When you run the setup script, it creates this structure:
 
 ```
+./[repository-name]/           # Project directory (separate git repo)
 ├── backup/                    # Backup artifacts
 │   ├── raw/                   # Raw exported resources
 │   ├── cleaned/               # Cleaned resources
@@ -31,134 +77,63 @@ This backup system provides:
 ├── scripts/                   # Automation scripts
 │   ├── daily-backup.sh        # Daily backup script
 │   └── setup-cron.sh          # Cron job setup
+├── .gitignore
 └── README.md
 ```
 
-## Setup
+## Documentation
 
-### Initial Setup
-The initial setup was completed on Tue, Jul 29, 2025  3:19:00 PM using:
-```bash
-./backup-namespace-setup.sh
-```
+For detailed setup and usage instructions, see:
+- **[NAMESPACE-BACKUP-README.md](NAMESPACE-BACKUP-README.md)** - Complete documentation
+- **Project README** - Generated in each backup project directory
 
-**Note**: The setup script creates a local project directory based on the repository name (e.g., `balance-fit`) to organize all backup files. This allows multiple namespace backups to coexist without conflicts.
+## Prerequisites
 
-### Daily Backups
-Daily backups are automated using:
-```bash
-# Navigate to the project directory
-cd balance-fit  # (or your repository name)
+- OpenShift CLI (`oc`) installed and configured
+- `kubectl` installed
+- `git` installed and configured
+- Access to source OpenShift cluster
+- ArgoCD installed in target cluster
+- GitHub repository with write access
 
-# Manual run
-./scripts/daily-backup.sh
+## Authentication
 
-# Setup cron job (runs daily at 2 AM)
-./scripts/setup-cron.sh
-```
-
-## ArgoCD Deployment
-
-### Deploy the ArgoCD Application
-```bash
-# Navigate to the project directory
-cd balance-fit  # (or your repository name)
-
-# Login to target cluster (if not already logged in)
-oc login <your-cluster-url> --token=<your-token>
-
-# Deploy ArgoCD application
-oc apply -f gitops/argocd-application.yaml
-
-# Monitor deployment
-oc get application balance-fit-prd-backup -n openshift-gitops -w
-```
-
-### Verify Deployment
-```bash
-# Navigate to the project directory (if not already there)
-cd balance-fit  # (or your repository name)
-
-# Check application status
-oc get application balance-fit-prd-backup -n openshift-gitops
-
-# Check target namespace
-oc get all -n balance-fit-prd
-
-# Check ArgoCD logs
-oc logs -n openshift-gitops deployment/argocd-application-controller
-```
-
-## Monitoring
-
-### ArgoCD UI
-Access the ArgoCD UI to monitor sync status:
-- Application: `balance-fit-prd-backup`
-- Namespace: `openshift-gitops`
-
-### Backup Logs
-Daily backup logs are available at:
-```bash
-# View latest backup log
-tail -f /var/log/balance-fit-prd-backup.log
-
-# View backup summaries (from project directory)
-cd balance-fit  # (or your repository name)
-ls -la backup/daily/
-```
-
-## Disaster Recovery
-
-### Restore from Backup
-1. Ensure target cluster is accessible
-2. Navigate to the project directory: `cd balance-fit` (or your repository name)
-3. Deploy ArgoCD application:
-   ```bash
-   oc apply -f gitops/argocd-application.yaml
-   ```
-4. ArgoCD will automatically sync and restore all resources
-
-### Manual Restore
-If ArgoCD is not available:
-```bash
-# Navigate to the project directory
-cd balance-fit  # (or your repository name)
-
-# Deploy using Kustomize
-kubectl apply -k gitops/overlays/prd
-```
-
-## Configuration
-
-- **Source Cluster**: Dynamic (detected from current context)
-- **Source Namespace**: balance-fit-prd
-- **GitHub Repository**: https://github.com/rich-p-ai/kohler-apps.git
-- **ArgoCD Namespace**: openshift-gitops
-
-### Authentication Requirements
-
-Before using the backup scripts, ensure you are authenticated to the OpenShift cluster:
+Before running the setup, authenticate to your OpenShift cluster:
 
 ```bash
 # Login to your OpenShift cluster
 oc login <your-cluster-url> --token=<your-token>
 
 # Verify access to the namespace
-oc get namespace balance-fit-prd
+oc get namespace <your-namespace>
 ```
-
-The backup scripts will automatically detect your current cluster context and verify access.
 
 ## Support
 
-For issues or questions:
-1. Check ArgoCD application status and logs
-2. Review daily backup logs
+For setup issues or questions:
+1. Review the [NAMESPACE-BACKUP-README.md](NAMESPACE-BACKUP-README.md) documentation
+2. Check script permissions and prerequisites
+3. Verify OpenShift cluster connectivity and authentication
+4. Check this repository for updates and issues
+
+For backup operation issues:
+1. Check the individual project directory documentation
+2. Review ArgoCD application status and logs
 3. Verify cluster connectivity and permissions
-4. Check GitHub repository for recent changes
+4. Check the backup project's GitHub repository
+
+## Contributing
+
+To improve these setup tools:
+1. Test changes in a development environment
+2. Update documentation for any new features
+3. Ensure backward compatibility
+4. Add appropriate error handling
+5. Update this README and documentation
 
 ---
 
-**Created**: Tue, Jul 29, 2025  3:19:00 PM  
-**Backup System**: Automated GitOps with ArgoCD  
-**Update Frequency**: Daily at 2:00 AM
+**Repository**: Kubernetes Namespace Backup Setup Tools  
+**Purpose**: Automated GitOps backup infrastructure creation  
+**Version**: 2.0 (with project directory support)  
+**Last Updated**: July 29, 2025

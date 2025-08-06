@@ -3,6 +3,15 @@ backup/raw/
 backup/daily/*/raw/
 *.log
 
+# Project directories created by backup-namespace-setup.sh
+# Each namespace backup creates its own git repository
+*/
+!backup-namespace-setup.sh
+!daily-namespace-backup.sh
+!NAMESPACE-BACKUP-README.md
+!README.md
+!.gitignore
+
 # Temporary files
 *.tmp
 *.temp
