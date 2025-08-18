@@ -5,7 +5,7 @@ items:
   metadata:
     annotations:
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"name":"code","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteMany"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-external-storagecluster-cephfs"}}
+        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"name":"code","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteMany"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-storagecluster-cephfs"}}
       pv.kubernetes.io/bind-completed: "yes"
       pv.kubernetes.io/bound-by-controller: "yes"
       volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
@@ -23,7 +23,7 @@ items:
     resources:
       requests:
         storage: 10Gi
-    storageClassName: ocs-external-storagecluster-cephfs
+    storageClassName: ocs-storagecluster-cephfs
     volumeMode: Filesystem
     volumeName: pvc-e671f28b-a862-4354-bb1e-386deab86d03
   status:
@@ -37,7 +37,7 @@ items:
   metadata:
     annotations:
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"name":"efit-vol01","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteMany"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-external-storagecluster-cephfs"}}
+        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"name":"efit-vol01","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteMany"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-storagecluster-cephfs"}}
       pv.kubernetes.io/bind-completed: "yes"
       pv.kubernetes.io/bound-by-controller: "yes"
       volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
@@ -55,7 +55,7 @@ items:
     resources:
       requests:
         storage: 10Gi
-    storageClassName: ocs-external-storagecluster-cephfs
+    storageClassName: ocs-storagecluster-cephfs
     volumeMode: Filesystem
     volumeName: pvc-3c5f2a58-a703-4063-9bfe-ed91c1e313d7
   status:
@@ -69,7 +69,7 @@ items:
   metadata:
     annotations:
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"app":"mysql-app"},"name":"mysql-pv-claim","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-external-storagecluster-cephfs"}}
+        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"app":"mysql-app"},"name":"mysql-pv-claim","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-storagecluster-cephfs"}}
       pv.kubernetes.io/bind-completed: "yes"
       pv.kubernetes.io/bound-by-controller: "yes"
       volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
@@ -89,7 +89,7 @@ items:
     resources:
       requests:
         storage: 10Gi
-    storageClassName: ocs-external-storagecluster-cephfs
+    storageClassName: ocs-storagecluster-cephfs
     volumeMode: Filesystem
     volumeName: pvc-0811c61a-abb5-4936-9855-8d8c59fb19df
   status:
