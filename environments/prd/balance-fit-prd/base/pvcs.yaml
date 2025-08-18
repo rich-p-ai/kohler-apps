@@ -1,0 +1,103 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"name":"code","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteMany"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-external-storagecluster-cephfs"}}
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+      volume.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+    creationTimestamp: "2024-03-05T21:35:42Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    name: code
+    namespace: balance-fit-prd
+    resourceVersion: "3347653730"
+    uid: e671f28b-a862-4354-bb1e-386deab86d03
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: ocs-external-storagecluster-cephfs
+    volumeMode: Filesystem
+    volumeName: pvc-e671f28b-a862-4354-bb1e-386deab86d03
+  status:
+    accessModes:
+    - ReadWriteMany
+    capacity:
+      storage: 10Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"name":"efit-vol01","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteMany"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-external-storagecluster-cephfs"}}
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+      volume.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+    creationTimestamp: "2024-03-05T21:35:42Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    name: efit-vol01
+    namespace: balance-fit-prd
+    resourceVersion: "3347653751"
+    uid: 3c5f2a58-a703-4063-9bfe-ed91c1e313d7
+  spec:
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: ocs-external-storagecluster-cephfs
+    volumeMode: Filesystem
+    volumeName: pvc-3c5f2a58-a703-4063-9bfe-ed91c1e313d7
+  status:
+    accessModes:
+    - ReadWriteMany
+    capacity:
+      storage: 10Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"app":"mysql-app"},"name":"mysql-pv-claim","namespace":"balance-fit-prd"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}},"storageClassName":"ocs-external-storagecluster-cephfs"}}
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+      volume.kubernetes.io/storage-provisioner: openshift-storage.cephfs.csi.ceph.com
+    creationTimestamp: "2024-03-05T21:35:42Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: mysql-app
+    name: mysql-pv-claim
+    namespace: balance-fit-prd
+    resourceVersion: "3347653740"
+    uid: 0811c61a-abb5-4936-9855-8d8c59fb19df
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: ocs-external-storagecluster-cephfs
+    volumeMode: Filesystem
+    volumeName: pvc-0811c61a-abb5-4936-9855-8d8c59fb19df
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 10Gi
+    phase: Bound
+kind: List
+metadata:
+  resourceVersion: ""
