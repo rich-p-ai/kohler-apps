@@ -1,0 +1,14 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: deployer-dockercfg-pqrxr
+  namespace: designcenter
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault-store
+    kind: SecretStore
+  target:
+    name: deployer-dockercfg-pqrxr
+    creationPolicy: Owner
+  data:

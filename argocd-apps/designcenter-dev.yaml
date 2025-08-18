@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: designcenter-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rich-p-ai/kohler-apps.git
+    targetRevision: main
+    path: environments/dev/designcenter/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: designcenter
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

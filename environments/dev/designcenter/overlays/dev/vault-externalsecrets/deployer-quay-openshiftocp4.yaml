@@ -1,0 +1,14 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: deployer-quay-openshiftocp4
+  namespace: designcenter
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault-store
+    kind: SecretStore
+  target:
+    name: deployer-quay-openshiftocp4
+    creationPolicy: Owner
+  data:

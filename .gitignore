@@ -27,3 +27,9 @@ Thumbs.db
 # OS files
 .DS_Store
 Thumbs.db
+
+# allow GitOps content
+!environments/
+!environments/**
+!argocd-apps/
+!argocd-apps/**

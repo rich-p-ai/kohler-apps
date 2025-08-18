@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: designcenter
+resources:
+  - ../../base
+  - vault-secretstore.yaml
+  - vault-externalsecrets
+patchesStrategicMerge:
+  - pvc-odooconfigp-sc-patch.yaml
+  - pvc-odooconfig-sc-patch.yaml
+  - pvc-odoofilestoreprd-sc-patch.yaml
+  - pvc-odoofilestoreprod-sc-patch.yaml
+  - pvc-odoofilestoretest-sc-patch.yaml
+  - pvc-odoopsqlpvol01-sc-patch.yaml
+  - pvc-odoopsqlpvol02-sc-patch.yaml
+  - pvc-odoopsqltvol01-sc-patch.yaml
+  - pvc-odoopsqltvol02-sc-patch.yaml
