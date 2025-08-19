@@ -126,11 +126,9 @@ kind: ConfigMap
 metadata:
   annotations:
     kubernetes.io/description: Contains a CA bundle that can be used to verify the kube-apiserver when using internal endpoints such as the internal service IP or kubernetes.default.svc. No other usage is guaranteed across distributions of Kubernetes clusters.
-  creationTimestamp: "2025-08-18T21:05:03Z"
   name: kube-root-ca.crt
   namespace: designcenter
-  resourceVersion: "2948218"
-  uid: 13d5bd94-d2ae-4f8c-8177-3d15d3cc73cf
+---
 apiVersion: v1
 data:
   service-ca.crt: |
@@ -158,8 +156,5 @@ kind: ConfigMap
 metadata:
   annotations:
     service.beta.openshift.io/inject-cabundle: "true"
-  creationTimestamp: "2025-08-18T21:05:03Z"
   name: openshift-service-ca.crt
   namespace: designcenter
-  resourceVersion: "2933707"
-  uid: 6b7e717b-d380-421a-b953-aae7e193476d
