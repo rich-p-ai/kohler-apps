@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/rich-p-ai/kohler-apps.git
-    targetRevision: HEAD
+    targetRevision: migrate/designcenter
     path: environments/dev/financeapps2/overlays/dev
   destination:
     server: https://kubernetes.default.svc
