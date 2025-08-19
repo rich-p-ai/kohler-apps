@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: designcenter-dev
+  name: financeapps2-dev
   namespace: openshift-gitops
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,10 +10,10 @@ spec:
   source:
     repoURL: https://github.com/rich-p-ai/kohler-apps.git
     targetRevision: HEAD
-    path: environments/dev/designcenter/overlays/dev
+    path: environments/dev/financeapps2/overlays/dev
   destination:
     server: https://kubernetes.default.svc
-    namespace: designcenter
+    namespace: financeapps2
   syncPolicy:
     automated:
       prune: true

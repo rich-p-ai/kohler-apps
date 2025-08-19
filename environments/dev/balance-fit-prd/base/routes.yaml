@@ -1,0 +1,30 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"route.openshift.io/v1","kind":"Route","metadata":{"annotations":{},"creationTimestamp":"2024-03-05T21:38:19Z","name":"efit","namespace":"balance-fit-prd","resourceVersion":"3949303208","uid":"56792359-cbc0-408e-8a19-994c1289d6ee"},"spec":{"host":"efit-prd.apps.ocp4.kohlerco.com","port":{"targetPort":"nginx-service"},"to":{"kind":"Service","name":"nginx-service","weight":100},"wildcardPolicy":"None"},"status":{"ingress":[{"conditions":[{"lastTransitionTime":"2024-07-14T13:33:29Z","status":"True","type":"Admitted"}],"host":"efit-prd.apps.ocp4.kohlerco.com","routerCanonicalHostname":"router-default.apps.ocp4.kohlerco.com","routerName":"default","wildcardPolicy":"None"}]}}
+  creationTimestamp: "2025-08-18T16:55:56Z"
+  name: efit
+  namespace: balance-fit-prd
+  resourceVersion: "2803210"
+  uid: a9ceefdb-7dde-445e-a56c-3d2f9586d88c
+spec:
+  host: efit-prd.apps.ocp4.kohlerco.com
+  port:
+    targetPort: nginx-service
+  to:
+    kind: Service
+    name: nginx-service
+    weight: 100
+  wildcardPolicy: None
+status:
+  ingress:
+    - conditions:
+        - lastTransitionTime: "2025-08-18T16:55:56Z"
+          status: "True"
+          type: Admitted
+      host: efit-prd.apps.ocp4.kohlerco.com
+      routerCanonicalHostname: router-default.apps.ocp2.kohlerco.com
+      routerName: default
+      wildcardPolicy: None

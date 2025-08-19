@@ -1,0 +1,142 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"RoleBinding","metadata":{"annotations":{},"creationTimestamp":"2024-03-05T21:20:54Z","name":"admin","namespace":"balance-fit-prd","resourceVersion":"5365559305","uid":"d0818427-c015-41b9-a26b-7dacb4fe8ade"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"ClusterRole","name":"admin"},"subjects":[{"apiGroup":"rbac.authorization.k8s.io","kind":"User","name":"kube:admin"},{"apiGroup":"rbac.authorization.k8s.io","kind":"User","name":"KO95056"},{"apiGroup":"rbac.authorization.k8s.io","kind":"User","name":"ko16j89"},{"apiGroup":"rbac.authorization.k8s.io","kind":"User","name":"KOCEJC7"},{"apiGroup":"rbac.authorization.k8s.io","kind":"User","name":"KO161D2"},{"apiGroup":"rbac.authorization.k8s.io","kind":"User","name":"MARLON.BARBOSA@kohler.com"}]}
+  creationTimestamp: "2025-08-18T16:56:27Z"
+  name: admin
+  namespace: balance-fit-prd
+  resourceVersion: "2803508"
+  uid: 0428a9b0-c76c-4ff2-9159-2c6ab0aed7f3
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: kube:admin
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: KO95056
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: ko16j89
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: KOCEJC7
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: KO161D2
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: MARLON.BARBOSA@kohler.com
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"RoleBinding","metadata":{"annotations":{},"creationTimestamp":"2024-03-05T21:20:55Z","name":"openshift-pipelines-edit","namespace":"balance-fit-prd","ownerReferences":[{"apiVersion":"operator.tekton.dev/v1alpha1","blockOwnerDeletion":true,"controller":true,"kind":"TektonInstallerSet","name":"rhosp-rbac-rtd8g","uid":"96a8678d-2bd8-40db-b38a-3df25a2060bc"}],"resourceVersion":"3347605887","uid":"4f1a362a-94df-4835-a524-bb95f923ce45"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"ClusterRole","name":"edit"},"subjects":[{"kind":"ServiceAccount","name":"pipeline","namespace":"balance-fit-prd"}]}
+  creationTimestamp: "2025-08-18T16:56:28Z"
+  name: openshift-pipelines-edit
+  namespace: balance-fit-prd
+  ownerReferences:
+    - apiVersion: operator.tekton.dev/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: TektonInstallerSet
+      name: rhosp-rbac-rtd8g
+      uid: 96a8678d-2bd8-40db-b38a-3df25a2060bc
+  resourceVersion: "2803510"
+  uid: 2576b1dd-5c16-498c-a82f-23587f991ebf
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+  - kind: ServiceAccount
+    name: pipeline
+    namespace: balance-fit-prd
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"RoleBinding","metadata":{"annotations":{},"creationTimestamp":"2024-03-05T21:20:55Z","name":"pipelines-scc-rolebinding","namespace":"balance-fit-prd","ownerReferences":[{"apiVersion":"operator.tekton.dev/v1alpha1","blockOwnerDeletion":true,"controller":true,"kind":"TektonInstallerSet","name":"rhosp-rbac-rtd8g","uid":"96a8678d-2bd8-40db-b38a-3df25a2060bc"}],"resourceVersion":"3347605882","uid":"14d3f957-498f-430a-8897-cbeb3bc8c9ca"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"ClusterRole","name":"pipelines-scc-clusterrole"},"subjects":[{"kind":"ServiceAccount","name":"pipeline","namespace":"balance-fit-prd"}]}
+  creationTimestamp: "2025-08-18T16:56:28Z"
+  name: pipelines-scc-rolebinding
+  namespace: balance-fit-prd
+  ownerReferences:
+    - apiVersion: operator.tekton.dev/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: TektonInstallerSet
+      name: rhosp-rbac-rtd8g
+      uid: 96a8678d-2bd8-40db-b38a-3df25a2060bc
+  resourceVersion: "2803511"
+  uid: e69f7ce4-c266-4e4c-a5ef-70c7ecf32673
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pipelines-scc-clusterrole
+subjects:
+  - kind: ServiceAccount
+    name: pipeline
+    namespace: balance-fit-prd
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    openshift.io/description: Allows deploymentconfigs in this namespace to rollout pods in this namespace.  It is auto-managed by a controller; remove subjects to disable.
+  creationTimestamp: "2025-08-16T12:08:24Z"
+  name: system:deployers
+  namespace: balance-fit-prd
+  resourceVersion: "1152010"
+  uid: 76c91ddc-61ad-451e-a260-5126d067cdeb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:deployer
+subjects:
+  - kind: ServiceAccount
+    name: deployer
+    namespace: balance-fit-prd
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    openshift.io/description: Allows builds in this namespace to push images to this namespace.  It is auto-managed by a controller; remove subjects to disable.
+  creationTimestamp: "2025-08-16T12:08:24Z"
+  name: system:image-builders
+  namespace: balance-fit-prd
+  resourceVersion: "1152011"
+  uid: cfc4c67c-6ad5-4e58-8f4f-d5488ef4c492
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:image-builder
+subjects:
+  - kind: ServiceAccount
+    name: builder
+    namespace: balance-fit-prd
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"RoleBinding","metadata":{"annotations":{"openshift.io/description":"Allows all pods in this namespace to pull images from this namespace.  It is auto-managed by a controller; remove subjects to disable."},"creationTimestamp":"2024-03-05T21:20:54Z","name":"system:image-pullers","namespace":"balance-fit-prd","resourceVersion":"3347605788","uid":"27de6f31-57fa-428b-800b-6abd6b772977"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"ClusterRole","name":"system:image-puller"},"subjects":[{"apiGroup":"rbac.authorization.k8s.io","kind":"Group","name":"system:serviceaccounts:balance-fit-prd"}]}
+    openshift.io/description: Allows all pods in this namespace to pull images from this namespace.  It is auto-managed by a controller; remove subjects to disable.
+  creationTimestamp: "2025-08-18T16:56:38Z"
+  name: system:image-pullers
+  namespace: balance-fit-prd
+  resourceVersion: "2803586"
+  uid: 70927b32-7643-426e-9cad-e94e5d6e5c63
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:image-puller
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: system:serviceaccounts:balance-fit-prd
